@@ -1,0 +1,9 @@
+setup.py
+games.egg-info/PKG-INFO
+games.egg-info/SOURCES.txt
+games.egg-info/dependency_links.txt
+games.egg-info/top_level.txt
+mastermind/__init__.py
+mastermind/mastermind.py
+tictactoe/__init__.py
+tictactoe/tictactoe.py
