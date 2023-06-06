@@ -56,8 +56,9 @@ def player_move(ref_grid, player_grid, flags, mines_flagged, gamestate):
         else:
             player_grid[i, j] = ref_grid[i, j]
 
+            """
             def check_neighbours(x, y):
-                """Look at neighbouring squares for 0s."""
+                Look at neighbouring squares for 0s.
                 for pos in [(x + 1, y), (x + 1, y + 1), (x, y + 1),
                             (x - 1, y + 1), (x - 1, y), (x - 1, y - 1),
                             (x, y - 1), (x + 1, y - 1)]:
@@ -75,7 +76,92 @@ def player_move(ref_grid, player_grid, flags, mines_flagged, gamestate):
                                 player_grid[pos] = ref_grid[pos]
                         except IndexError:
                             None
-            check_neighbours(i, j)
+            #check_neighbours(i, j)
+
+            def show_neighbours(x, y, ref_grid, player_grid):
+                Show all neighbours of square.
+                for pos in [(x + 1, y), (x + 1, y + 1), (x, y + 1),
+                            (x - 1, y + 1), (x - 1, y), (x - 1, y - 1),
+                            (x, y - 1), (x + 1, y - 1)]:
+                    try:
+                        player_grid[pos] = ref_grid[pos]
+                    except IndexError:
+                        None
+                return ref_grid, player_grid
+            
+            # if zero square, show all neighbours to player
+            if ref_grid[i, j] == 0:
+                ref_grid, player_grid = show_neighbours(i, j, ref_grid, player_grid)
+            """
+
+
+            def neighbours(x,  y):
+                """List of indices of neigbours of (x,y)."""
+                # list of all possible neigbours
+                idx = [(x + 1, y), (x + 1, y + 1), (x, y + 1),
+                            (x - 1, y + 1), (x - 1, y), (x - 1, y - 1),
+                            (x, y - 1), (x + 1, y - 1)]
+                # list of neighbours
+                n_idx = []
+                # add those within the grid
+                for pos in idx:
+                    try:
+                        ref_grid[pos]
+                        n_idx.append(pos)
+                    except IndexError:
+                        None
+                return n_idx
+
+
+            def zero_method(x, y, ref_grid, player_grid):
+                """Call on zero squares to find all connected zeroes and border."""
+                # list of connected zeros
+                zero_list = []
+                # list of border
+                border_list = []
+                
+                def f(x,y):
+                    # loop over all neighbours
+                    for pos in neighbours(x,y):
+                        # if zero and not in list, add to list and call f
+                        if ref_grid[pos] == 0 and not pos in zero_list:
+                            zero_list.append(pos)
+                            f(pos[0],pos[1])
+                        # if not zero and not in border list, add
+                        elif not pos in border_list:
+                            border_list.append(pos)
+                
+                f(x,y)
+
+                # now add all zeros and borders found to player view
+                for pos in zero_list:
+                    player_grid[pos] = ref_grid[pos]
+                for pos in border_list:
+                    player_grid[pos] = ref_grid[pos]
+                
+                return ref_grid, player_grid
+            
+
+            # if move is a zero, call method
+            if ref_grid[i, j] == 0:
+                ref_grid, player_grid = zero_method(i, j, ref_grid, player_grid)
+            # if not, call on any neighbouring zeros
+            else:
+                nbs = neighbours(i, j)
+                for pos in nbs:
+                    if ref_grid[pos] == 0:
+                        ref_grid, player_grid = zero_method(pos[0], pos[1], ref_grid, player_grid)
+
+
+
+
+
+
+            
+                    
+                    
+                    
+
     return ref_grid, player_grid, flags, mines_flagged, gamestate
 
 
