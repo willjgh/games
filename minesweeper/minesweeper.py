@@ -152,16 +152,6 @@ def player_move(ref_grid, player_grid, flags, mines_flagged, gamestate):
                     if ref_grid[pos] == 0:
                         ref_grid, player_grid = zero_method(pos[0], pos[1], ref_grid, player_grid)
 
-
-
-
-
-
-            
-                    
-                    
-                    
-
     return ref_grid, player_grid, flags, mines_flagged, gamestate
 
 
@@ -194,5 +184,14 @@ def game(m, n, mines):
 
         # check if all mines flagged
         if mines == flags and mines == mines_flagged:
-            print("You win!")
+            print("You win! number")
+            gamestate = False
+
+        # check if flags match up with mines
+        mine_x = list(np.where(ref_grid == -1)[0])
+        mine_y = list(np.where(ref_grid == -1)[1])
+        flag_x = list(np.where(player_grid == "F")[0])
+        flag_y = list(np.where(player_grid == "F")[1])
+        if (mine_x == flag_x) and (mine_y == flag_y):
+            print("You win! location")
             gamestate = False
