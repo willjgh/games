@@ -3,7 +3,7 @@ import numpy as np
 import os
 import pygame
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
+#os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 """
 window_height = 900
@@ -180,6 +180,7 @@ def display_grid(m, n, player_grid, window):
 
 class Game():
     def __init__(self, m, n, mines):
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
         # setup game
         pygame.init()
         self.window = pygame.display.set_mode((1000, 1000))
@@ -200,7 +201,7 @@ class Game():
         # store current move
         self.x = 0
         self.y = 0
-        self.type = "f"
+        self.type = ""
         # load sprites
         self.cell_size = min([int(1000 / n), int(1000 / m)])
         self.sprite1 = pygame.transform.scale(pygame.image.load("one.png"), (self.cell_size, self.cell_size))
